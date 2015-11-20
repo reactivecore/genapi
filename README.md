@@ -16,6 +16,33 @@ Any call to `/api/get_user` will be forwarded to `MyService.getUser`. The return
 
 Additionally a routes-File will be generated, which in turn can be compiled by the regular Play 2.4 routes compiler.
 
+Example
+-------
+
+An example can be found inside `PluginTest`. Just look at `conf/apidef.txt`.
+
+This will generate controllers inside `PluginTest/target/scala-2.11/genapi/MainApi` and `PluginTest/target/scala-2.11/genapi/MainOverride`.
+
+A routes file will be generated inside `PluginTest/target/scala-2.11/genapi/apidef.routes`
+
+How to use
+----------
+
+GenApi is not yet pushed to maven. In order to use it, you have to check out and deploy to local Ivy-Repository using
+
+    publishLocal
+    
+Afterwards you can add the dependency to your Play Application, just modify the `project/plugins.sbt`
+
+    addSbtPlugin("net.reactivecore" % "genapi" % "0.1-SNAPSHOT")
+    
+The generated route file needs to get picked up by the play routes, for this the following is to be added to your main `conf/routes`
+
+    -> / apidef.Routes
+
+Note: The routes are scanned from up to bottom, so add the line above before you run into any catch-all-routes.
+
+
 Supported Arguments
 -------------------
 

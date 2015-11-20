@@ -1,0 +1,17 @@
+/RUNNING_PID
+/logs/
+/project/*-shim.sbt
+/project/project/
+/project/target/
+/target/
+.idea
+.sbtserver
+/project/.sbtserver.lock
+/PluginTest/target/
+/PluginTest/logs
+/PluginTest/project/project
+/PluginTest/project/target/
+src/sbt-test/sbt-plugin-seed/call-hello/target/
+src/sbt-test/sbt-plugin-seed/call-hello/project/project/
+src/sbt-test/sbt-plugin-seed/call-hello/project/target/
+src/sbt-test/sbt-plugin-seed/target/

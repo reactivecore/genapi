@@ -1,0 +1,18 @@
+# This is a comment
+controller MainApi default
+
+GET /api/get_user services.MyService.getUser()
+GET /api/delete_user services.MyService.withoutResult()
+GET /api/who_am_i services.MyService.withStringResult()
+GET /api/session_modifying services.MyService.withResultResult()
+
+# JSON Argument
+POST /api/echo_user services.MyService.echoUser(user: @model.User)
+# Query Argument
+GET /api/echo_num services.MyService.echoInt(num: Int)
+# Path Argument
+GET /api/echo_route/:path services.MyService.echoString(path)
+
+controller MainOverride default controllers.MyBase
+
+GET /api/get_user services.MyService.getUser()

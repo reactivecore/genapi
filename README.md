@@ -16,6 +16,28 @@ Any call to `/api/get_user` will be forwarded to `MyService.getUser`. The return
 
 Additionally a routes-File will be generated, which in turn can be compiled by the regular Play 2.4 routes compiler.
 
+Motivation
+----------
+
+If you have a play application which has a lot of Api-Calls (e.g. for your client-side-JavaScript framework), you will end up 
+in a lot of entries to your routes-File which do not much more than service JSON-Content. 
+
+As all route-entries run into Controller-Actions, which you also have to add them to controlles.
+
+Controllers are a bit bad to test, because mostly serve some purposes
+
+- Decoding Input values
+- Doing the actual action (often in a service)
+- Encoding Result
+- Maybe error handling
+
+In the end this lead to the outsourcing of all real work into injected services which take typed arguments and return typed results.
+ 
+This will make writing controllers a dull work because decoding/encoding/error-handling can be a lot generalized. 
+
+GenApi wants to step down from this pain by generating the Controllers and the route-Files completely automatic from an Api-Definition file
+which directly calls the Service.
+
 Example
 -------
 

@@ -24,7 +24,7 @@ in a lot of entries to your routes-File which do not much more than service JSON
 
 As all route-entries run into Controller-Actions, which you also have to add them to controlles.
 
-Controllers are a bit bad to test, because mostly serve some purposes
+Controllers are a bit bad to test, because they mostly serve multiple purposes
 
 - Decoding Input values
 - Doing the actual action (often in a service)
@@ -47,8 +47,8 @@ This will generate controllers inside `PluginTest/target/scala-2.11/genapi/MainA
 
 A routes file will be generated inside `PluginTest/target/scala-2.11/genapi/apidef.routes`
 
-How to use
-----------
+How to add to your project
+--------------------------
 
 GenApi is not yet pushed to maven. In order to use it, you have to check out and deploy to local Ivy-Repository using
 
@@ -57,13 +57,56 @@ GenApi is not yet pushed to maven. In order to use it, you have to check out and
 Afterwards you can add the dependency to your Play Application, just modify the `project/plugins.sbt`
 
     addSbtPlugin("net.reactivecore" % "genapi" % "0.1-SNAPSHOT")
-    
+
+Now you can fill a the `conf/apidef.txt` in the following format
+   
+    # This is a comment
+    controller MainApi default # Generate a controller called MainApi using the default code generator (currently there is only this one)
+    GET /api/get_user services.MyService.getUser() # Add calls to controller
+
+   
 The generated route file needs to get picked up by the play routes, for this the following is to be added to your main `conf/routes`
 
     -> / apidef.Routes
 
 Note: The routes are scanned from up to bottom, so add the line above before you run into any catch-all-routes.
 
+How to use
+----------
+
+You can add definitions to the file `conf/apidef.txt`
+
+    controller MainApi default
+    POST /api/echo_user services.MyService.echoUser(user: @model.User)
+    
+The file will be automatically picked up by the SBT-Plugin and it will create the controllers and routes files for you.
+
+This will generate a controller called `MainApi` in `target/scala-2.11/genapi/MainApi.scala` which automatically injects the `services.MyService` dependency and calls it in `/api/echo_user`.
+
+    package generated
+    
+    /* ... */
+    class MainApi @Inject() (myService: services.MyService) extends DefaultGenApiControllerBase {
+    
+      def action_postApiEchoUser() = actionBuilder.async { implicit request =>
+        catchErrors {
+          val user = parseJsonInput[model.User](request)
+          myService.echoUser(user).map (formatResult(_))
+        }
+      }
+    }
+    
+`catchErrors`, `parseJsonInput` and `formatResult` are defined in the base class `DefaultGenApiControllerBase` and can also be overridden by the user.
+
+The generated routes in `target/genapi/apidef.routes` file looks like this
+
+    POST /api/echo_user generated.MainApi.action_postApiEchoUser()
+
+You can override the base class of the generated controller, by passing another argument to the `controller` directive in `genapi.txt`, like this:
+
+    controller MyController default controllers.MyBase
+
+`controllers.MyBase` should derive from `generated.DefaultGenApiControllerBase` so that you do not have to declare everything by yourself.
 
 Supported Arguments
 -------------------

@@ -3,6 +3,8 @@ genapi
 
 GenApi is a controller and routes file generator for Play 2.4 (but also other Generators can be added).
 
+It works as a SBT-Plugin.
+
 It picks up a file called apidef.txt containing code like this:
 
     controller MainApi default

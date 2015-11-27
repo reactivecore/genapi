@@ -51,14 +51,11 @@ A routes file will be generated inside `PluginTest/target/scala-2.11/genapi/apid
 
 How to add to your project
 --------------------------
+GenApi is published to Maven Central.
 
-GenApi is not yet pushed to maven. In order to use it, you have to check out and deploy to local Ivy-Repository using
+Add the dependency to your Play Application, just modify the `project/plugins.sbt`
 
-    publishLocal
-    
-Afterwards you can add the dependency to your Play Application, just modify the `project/plugins.sbt`
-
-    addSbtPlugin("net.reactivecore" % "genapi" % "0.1-SNAPSHOT")
+    addSbtPlugin("net.reactivecore" % "genapi" % "0.1")
 
 Now you can fill a the `conf/apidef.txt` in the following format
    
